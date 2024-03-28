@@ -1,11 +1,12 @@
 package main
 
 import (
-	"context"
 	"github.com/AleksandrMR/gateway_hashService/internal/config"
 	"github.com/AleksandrMR/gateway_hashService/internal/httpServer"
 	"log/slog"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 const (
@@ -17,12 +18,17 @@ const (
 func main() {
 	conf := config.MustLoad()
 	log := setupLogger(conf.Env)
-	log.Info("starting application", slog.Any("conf", conf))
+	log.Info("starting httpServer", slog.Any("conf", conf))
 
-	ctx := context.Background()
-	if err := httpServer.Start(ctx, conf, log); err != nil {
-		panic(err)
-	}
+	srv := httpServer.New(conf, log)
+	go srv.MustRun()
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+	sign := <-stop
+	log.Info("stopping httpServer", slog.String("signal", sign.String()))
+	srv.Stop()
+	log.Info("httpServer stopped")
 }
 
 func setupLogger(env string) *slog.Logger {
