@@ -31,6 +31,10 @@ func Start(
 	return http.ListenAndServe(httpAddress, mux)
 }
 
+func Stop() {
+
+}
+
 func getServerAddress(address string, port int) string {
 	var serverAddress string
 	serverAddress = address + fmt.Sprintf(":%d", port)
