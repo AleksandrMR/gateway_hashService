@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/AleksandrMR/gateway_hashService/internal/config"
-	"github.com/AleksandrMR/gateway_hashService/internal/httpServer"
 	"log/slog"
 	"os"
 	"os/signal"
