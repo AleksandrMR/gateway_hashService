@@ -10,4 +10,4 @@ get-deps:
 	go get -u github.com/ilyakaznacheev/cleanenv
 
 run-local:
-	go run ./cmd/gateway/main.go --config=./config/local.yaml
+	go run ./cmd/main.go --config=./config/local.yaml

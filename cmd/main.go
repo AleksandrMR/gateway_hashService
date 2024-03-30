@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/AleksandrMR/gateway_hashService/internal/app"
 	"github.com/AleksandrMR/gateway_hashService/internal/config"
 	"log/slog"
 	"os"
@@ -19,14 +20,14 @@ func main() {
 	log := setupLogger(conf.Env)
 	log.Info("starting httpServer", slog.Any("conf", conf))
 
-	srv := httpServer.New(conf, log)
-	go srv.MustRun()
+	application := app.New(conf, log)
+	go application.MustRun()
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
 	sign := <-stop
 	log.Info("stopping httpServer", slog.String("signal", sign.String()))
-	srv.Stop()
+	application.Stop()
 	log.Info("httpServer stopped")
 }
 
