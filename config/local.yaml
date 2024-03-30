@@ -1,10 +1,10 @@
 env: "local"
 token_ttl: 1h
 http:
-  address: "localhost"
+  host: "localhost"
   port: 8080
   timeout: 5s
 grpc:
-  address: "localhost"
+  host: "localhost"
   port: 50051
   timeout: 5s
